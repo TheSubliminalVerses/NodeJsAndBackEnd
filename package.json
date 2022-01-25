@@ -1,0 +1,15 @@
+{
+  "name": "assignment3",
+  "version": "1.0.0",
+  "description": "NodeJs + Backend project",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Michael Adrian Polesensky and Mani Gudrvardarson",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.2",
+    "sqlite3": "^5.0.2"
+  }
+}
