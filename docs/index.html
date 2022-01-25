@@ -134,6 +134,16 @@
             <div class="desc info">This method has no input parameters</div>
           </div>
           <div class="part">
+            <h4>Example</h4>
+            <div class="example">
+              <pre>
+                <code>
+  GET http://localhost:3000/products
+                </code>
+              </pre>
+            </div>
+          </div>
+          <div class="part">
             <h4>Response</h4>
             <div class="response-item">
               <div class="result"><span class="response-code code-2xx">200</span> - <span class="status">Success</span></div>
@@ -179,6 +189,16 @@
             <div class="desc info">This method has no input parameters</div>
           </div>
           <div class="part">
+            <h4>Example</h4>
+            <div class="example">
+              <pre>
+                <code>
+  GET http://localhost:3000/products/1
+                </code>
+              </pre>
+            </div>
+          </div>
+          <div class="part">
             <h4>Response</h4>
             <div class="response-item">
               <div class="result"><span class="response-code code-4xx">401</span> - <span class="status">Not Found</span></div>
@@ -197,37 +217,17 @@
               <div class="example">
                 <pre>
                   <code>
-  {
-    "products": [
-      {
-        "id": 1,
-        "brand": "Product 1",
-        "model": "This is product 1",
-        "os": "ios"
-        "screensize": "10.00",
-        "image": "http://placehold.it/200x200"
-      },
-      {
-        "id": 2,
-        "brand": "Product 1",
-        "model": "This is product 1",
-        "os": "ios"
-        "screensize": "10.00",
-        "image": "http://placehold.it/200x200"
-      }
-    ]
-  }
+    {
+      "id": 1,
+      "brand": "Product 1",
+      "model": "This is product 1",
+      "os": "ios"
+      "screensize": "10.00",
+      "image": "http://placehold.it/200x200"
+    }
                   </code>
                 </pre>
               </div>
-            </div>
-
-            <!-- <span class="response-code code-3xx">300</span>
-            <span class="response-code code-4xx">400</span>
-            <span class="response-code code-5xx">500</span> -->
-
-            <div>
-
             </div>
           </div>
         </section>
@@ -278,17 +278,20 @@
               </tbody>
               <tfoot colspan="5"><tr><td class="info">*required</td></tr></tfoot>
             </table>
-            <h4>Example Body</h4>
+          </div>
+          <div class="part">
+            <h4>Example</h4>
             <div class="example">
               <pre>
                 <code>
-    {
-      "brand": "Product 1",
-      "model": "This is product 1",
-      "os": "ios"
-      "screensize": "10.00",
-      "image": "http://placehold.it/200x200"
-    }
+  POST http://localhost:3000/products
+  {
+    "brand": "Product 1",
+    "model": "This is product 1",
+    "os": "ios"
+    "screensize": "10.00",
+    "image": "http://placehold.it/200x200"
+  }
                 </code>
               </pre>
             </div>
@@ -372,17 +375,20 @@
                 </tr>
               </tbody>
             </table>
-            <h4>Example Body</h4>
+          </div>
+          <div class="part">
+            <h4>Example</h4>
             <div class="example">
               <pre>
                 <code>
-    {
+  PUT http://localhost:3000/products/1
+  {
       "brand": "Product 1",
       "model": "This is product 1",
       "os": "ios"
       "screensize": "10.00",
       "image": "http://placehold.it/200x200"
-    }
+  }
                 </code>
               </pre>
             </div>
@@ -457,8 +463,14 @@
         </header>
         <section class="documentation">
           <div class="part">
-            <h4>Parameters</h4>
-            <div class="desc info">This method has no input parameters</div>
+            <h4>Example</h4>
+            <div class="example">
+              <pre>
+                <code>
+  DELETE http://localhost:3000/products/1
+                </code>
+              </pre>
+            </div>
           </div>
           <div class="part">
             <h4>Response</h4>
@@ -475,7 +487,7 @@
             </div>
             <div class="response-item">
               <div class="result"><span class="response-code code-2xx">200</span> - <span class="status">Success</span></div>
-              <div>Returns a list of <a href="#object-product">Products</a></div>
+              <div>The <a href="#object-product">products</a> has been deleted.</div>
               <div class="example">
                 <pre>
                   <code>
@@ -483,14 +495,6 @@
                   </code>
                 </pre>
               </div>
-            </div>
-
-            <!-- <span class="response-code code-3xx">300</span>
-            <span class="response-code code-4xx">400</span>
-            <span class="response-code code-5xx">500</span> -->
-
-            <div>
-
             </div>
           </div>
         </section>
