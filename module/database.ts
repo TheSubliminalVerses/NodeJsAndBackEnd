@@ -33,3 +33,16 @@ export function prepare(db: Database): void {
         VALUES (0, 'Apple', 'iPhone 13', 'iOS', 17, 'https://...')`)
     })
 }
+
+export function setProducts(query: string, db: Database): void {
+    db.serialize(function () {
+        db.run(query, error => {
+            if (error) {
+                console.error("-> Query Failed!", error)
+                return
+            }
+
+            console.log("-> Query OK")
+        })
+    })
+}

@@ -32,7 +32,7 @@ app.use("/", router)
 app.use("/static", express.static(__dirname + "/public"))
 
 // get method used to initialize the database upon creation, not used in production.
-router.get("http://localhost:8080/apiv1/init", (req, res) => {
+router.get("/apiv1/init", (req, res) => {
     database.prepare(db)
     res.send("Database prepared")
     console.log(`-> GET ${HTTPRequestCodes.success}: OK`)
@@ -62,6 +62,9 @@ router.post("/apiv1/submit",  urlParser, (req, res) => {
     if (!req.body) {
         console.log(`-> POST ${HTTPRequestCodes.server_err}: SERVER ERROR`)
     } else {
+        database.setProducts(`INSERT INTO products (id, brand, model, os, screen_size, image)
+        VALUES (${req.body._id}, ${req.body._brand}, ${req.body.model}, ${req.body._os}, ${req.body._screenSize}, ${req.body._image})`, db)
+
         console.log(`-> POST ${HTTPRequestCodes.post_success}: OK`)
     }
 })

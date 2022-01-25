@@ -7,7 +7,7 @@ $("input#submit").on("click", function () {
     screenSize = $("input#screen-size").val()
     image = $("input#image").val()
 
-    $.post("http://localhost:8080/apiv1/submit", {id: id, brand: brand, model: model, os: os, screenSize: screenSize, image: image}, data => {
+    $.post("http://localhost:8080/apiv1/submit", {_id: id, _brand: brand, _model: model, _os: os, _screenSize: screenSize, _image: image}, data => {
         if (data === "true") {
             alert("Data successfully submitted!")
         }

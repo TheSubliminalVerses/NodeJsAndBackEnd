@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.prepare = exports.queryProducts = void 0;
+exports.setProducts = exports.prepare = exports.queryProducts = void 0;
 function queryProducts(type, query, db, response) {
     if (type === "all") {
         db.all(query, [], (err, rows) => {
@@ -33,3 +33,15 @@ function prepare(db) {
     });
 }
 exports.prepare = prepare;
+function setProducts(query, db) {
+    db.serialize(function () {
+        db.run(query, error => {
+            if (error) {
+                console.error("-> Query Failed!", error);
+                return;
+            }
+            console.log("-> Query OK");
+        });
+    });
+}
+exports.setProducts = setProducts;
