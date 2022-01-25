@@ -5,22 +5,22 @@ export function queryProducts(type: string, query: string, db: Database, respons
     if (type === "all") {
         db.all(query, [], (err, rows) => {
             if (err) {
-                console.error("Fetch failed: " + err)
-                console.error("GET 400: BAD REQUEST")
+                console.error("-> Fetch failed: " + err)
+                console.error("-> GET 400: BAD REQUEST")
                 return
             }
 
-            console.log("Query OK")
+            console.log("-> Query OK")
             rows.forEach(row => {response.send(row)})
         })
     } else if (type === "single") {
         db.get(query, [], (err, row) => {
             if (err) {
-                console.error("Fetch failed: " + err)
+                console.error("-> Fetch failed: " + err)
                 return
             }
 
-            console.log("Query OK")
+            console.log("-> Query OK")
             response.send(row)
         })
     }
