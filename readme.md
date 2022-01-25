@@ -41,7 +41,7 @@ Input:
 
 Response 400: Invalid input
 
-## POST /products/{id} - Update product
+## PUT /products/{id} - Update product
 Response 200: Successful
 Response 401: Not found
 
