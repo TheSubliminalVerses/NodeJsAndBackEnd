@@ -1,3 +1,13 @@
+/**
+ * This webpage is written by Mani Gudvardarson and Michael Adrian Polesensky
+ * for Assignment 3 in Web Technology at VU University Amsterdam.
+ *
+ * Coordinator: J.R . van Ossenbruggen
+ * TA: Mithat Ozgun
+ * Group: 109
+ * Date: 27.1.2022
+ */
+
 // entry point for server
 const sqlite3 = require("sqlite3").verbose()
 const database = require("../module/database")
