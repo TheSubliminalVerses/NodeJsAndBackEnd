@@ -11,7 +11,7 @@ export function queryProducts(type: string, query: string, db: Database, respons
             }
 
             console.log("-> Query OK")
-            rows.forEach(row => {response.send(row)})
+            response.send(rows)
         })
     } else if (type === "single") {
         db.get(query, [], (err, row) => {
