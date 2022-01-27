@@ -90,7 +90,7 @@ router.post(`/${API_BASE}/${PRODUCTS_BASE}`,  jsonParser, (req, res) => {
         })
     } else {
         const { brand, model, os, screen_size, image } = req?.body
-        database.setProducts(`INSERT INTO products (brand, model, os, screen_size, image)
+        database.setProducts(`INSERT INTO products (brand, model, os, screensize, image)
         VALUES ('${brand}', '${model}', '${os}', ${screen_size ? parseInt(screen_size) : null}, '${image || null}')`, db)
 
         database.getLastProduct((row) => {
@@ -105,7 +105,7 @@ router.put(`/${API_BASE}/${PRODUCTS_BASE}/:id`,  jsonParser, async (req, res) =>
 
     database.queryProducts(
         "single",
-        `SELECT id, brand, model, OS os, screen_size, image FROM products WHERE id = ${req.params.id}`,
+        `SELECT id, brand, model, OS os, screensize, image FROM products WHERE id = ${req.params.id}`,
         db,
         (row) => {
             const keys = Object.keys(req.body)
@@ -163,7 +163,7 @@ router.get(`/${API_BASE}/${PRODUCTS_BASE}`, (req, res) => {
     res.set({"content-type": "application/json"})
     database.queryProducts(
         "all",
-        "SELECT id, brand, model, os, screen_size, image FROM products ORDER BY id",
+        "SELECT id, brand, model, os, screensize, image FROM products ORDER BY id",
         db,
         (result) => {
             res.send(result)
@@ -182,7 +182,7 @@ router.get(`/${API_BASE}/${PRODUCTS_BASE}/:id`, (req, res) => {
     res.set({"content-type": "application/json"})
     database.queryProducts(
         "single",
-        `SELECT id, brand, model, os, screen_size, image FROM products WHERE id = ${req.params.id}`,
+        `SELECT id, brand, model, os, screensize, image FROM products WHERE id = ${req.params.id}`,
         db,
         (result) => {
             res.send(result)
