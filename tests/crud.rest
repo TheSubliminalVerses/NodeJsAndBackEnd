@@ -1,0 +1,33 @@
+## Get list
+GET http://localhost:8080/apiv1/products HTTP/1.1
+content-type: application/json
+
+### Get single
+
+GET http://localhost:8080/apiv1/products/1 HTTP/1.1
+content-type: application/json
+
+### Create
+
+POST http://localhost:8080/apiv1/products HTTP/1.1
+content-type: application/json
+
+{
+    "name": "sample",
+    "time": "Wed, 21 Oct 2015 18:27:50 GMT"
+}
+
+### Update
+
+PUT http://localhost:8080/apiv1/products/1 HTTP/1.1
+content-type: application/json
+
+{
+    "name": "sample",
+    "time": "Wed, 21 Oct 2015 18:27:50 GMT"
+}
+
+### Delete
+
+DELETE http://localhost:8080/apiv1/products/1 HTTP/1.1
+content-type: application/json
