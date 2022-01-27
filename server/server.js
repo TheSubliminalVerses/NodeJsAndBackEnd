@@ -7,6 +7,7 @@ const path = require("path")
 const router = express.Router()
 const app = express()
 const PORT = 8080
+const cors = require('cors')
 
 const HTTPRequestCodes = {
     success: 200,
@@ -35,6 +36,7 @@ let db = new sqlite3.Database("./private/api.db", err => {
 let urlParser = bodyParser.json({extended: false})
 
 
+app.use(cors())
 app.use("/", router)
 app.use(`/${API_BASE}`, express.static(path.join(__dirname, '../docs')))
 
