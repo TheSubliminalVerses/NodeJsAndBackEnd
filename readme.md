@@ -1,5 +1,10 @@
 # Developer Documentation
 
+## Initialize database
+```
+npm run init
+```
+
 ### Run project in developer mode
 ```
 npm install
