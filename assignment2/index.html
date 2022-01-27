@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+    This webpage is written by Mani Gudvardarson and Michael Adrian Polesensky
+    for Assignment 2 in Web Technology at VU University Amsterdam.
+
+    Coordinator: J.R . van Ossenbruggen
+    TA: Mithat Ozgun
+    Group: 109
+    Date: 20.1.2022
+ -->
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./style.css" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Awesome Shop (WIP title)</title>
+    <!-- reserved for *.loader.js file -->
+    <!-- <script defer ajax_http_request="loaderJS"></script> -->
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
+    <script defer src="./src/main.js"></script>
+    <script defer src="./src/requests.js"></script>
+</head>
+<body>
+    <div class="about-box" id="box">
+        <h1>About Us <span id="close">&times;</span></h1>
+        <section class="about-us">
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+                mollit anim id est laborum.</p>
+        </section>
+    </div>
+    <header>
+        <div class="intro">
+            <p>We have a large variety of high quality items straight from the manufacturers.</p>
+            <p id="type" phrase="High quality for competitive costs. Enjoy your shopping!"></p>
+        </div>
+        <div class="about-btn">
+            <a href="javascript:void(0)" id="about">About</a>
+        </div>
+        <div class="header-row">
+            <div class="contact">
+                <h2>Where can you find us?</h2>
+                <address>
+                    <ul class="no-bullets">
+                        <li>Address: <strong>2nd street, NewYork</strong></li>
+                        <li>Phone: <a href="tel:+1311255464" id="tel">+1 311 255 464</a></li>
+                        <li>Contact: <a href="mailto:astore@support.com" id="email">astore@support.com</a></li>
+                    </ul>
+                </address>
+            </div>
+            <div class="shopping-basket">
+                <div class="basket-upper">
+                    <h2 id="basket-title">Shopping Basket</h2>
+                </div>
+                <ul class="image-list">
+                    <li>Items: <strong>3 items</strong></li>
+                    <li>Total: €1.239.30</li>
+                </ul>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#top-selling-products">Top Selling Products</a></li>
+                <li><a href="#reviews">Reviews</a></li>
+                <li><a href="#styling-examples">Styling Examples</a></li>
+                <li><a href="#return-policy">Return Policy</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="shop-main">
+        <section class="top-selling">
+            <div class="top-list-container">
+                <h3>Top Selling Categories</h3>
+                <ol>
+                    <li>Smartphones</li>
+                    <li>Laptops</li>
+                    <li>PCs</li>
+                    <li>Monitors</li>
+                    <li>Smartphone Covers</li>
+                </ol>
+            </div>
+            <div class="top-list-container">
+                <h3>Top Selling Brands</h3>
+                <ol>
+                    <li>Apple</li>
+                    <li>Samsung</li>
+                    <li>LG</li>
+                </ol>
+            </div>
+        </section>
+
+        <section  class="top-selling-products" id="top-selling-products">
+            <h2>Top Selling Products</h2>
+
+            <form action="#" method="post" id="add-product-form"></form>
+            <table class="product-table">
+                <caption>Product table</caption>
+                <thead>
+                    <tr>
+                        <th class="brand"><span class="order">Brand</span></th>
+                        <th class="model"><span class="order">Model</span></th>
+                        <th class="os"><abbr title="Operating System"><span class="order">OS</span></abbr></th>
+                        <th class="screensize"><span class="order">Screen Size</span></th>
+                        <th class="image">image</th>
+                    </tr>
+                </thead>
+                <tbody class="table-body" id="body-1">
+                </tbody>
+                <tfoot>
+                    <tr colspan="5">Add product</tr>
+                    <tr class="input-row">
+                        <td>
+                            <label for="brand">Brand</label>
+                            <input name="brand" id="brand" type="text" placeholder="Example: Apple" form="add-product-form" required>
+                        </td>
+                        <td>
+                            <label for="model">Model</label>
+                            <input name="model" type="text" id="model" placeholder="Example: iPhone 12" form="add-product-form" required>
+                        </td>
+                        <td>
+                            <label for="os">OS</label>
+                            <input name="os" type="text" id="os" placeholder="Example: iOS" form="add-product-form" required>
+                        </td>
+                        <td>
+                            <label for="screensize">Screensize</label>
+                            <input name="screensize" type="number" id="screensize" form="add-product-form" max="100" min="1" step="1" required><abbr title="Inches">in</abbr>
+                        </td>
+                        <td>
+                            <label for="image">Image URL</label>
+                            <input name="image" type="url" id="image" form="add-product-form" placeholder="https://..." required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5">
+                            <div class="table-menu">
+                                <input type="submit" value="Add Product" form="add-product-form" id="add-product-button">
+                                <input type="button" value="Reset table" class="danger" id="reset-product-table-button">
+                                <input type="button" value="Get table" class="restore" id="restore-table">
+                                <input type="button" value="Create demo data" id="create-demo-data-button">
+                                <span id="request-feedback"></span>
+                                <span id="request-error"></span>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+            <div class="table-footnote"><em>All specifications on our products are gathered from the respected wholesaler. We take no responsibility for inaccurate data.</em></div>
+            <div class="table-footnote">For <abbr title="Operating System">OS</abbr> definitions click <a href="#os-definitions">here</a>.</div>
+        </section>
+
+        <section id="reviews">
+            <div class="heading">
+                <h2>Reviews</h2>
+            </div>
+            <table class="reviews">
+                <caption>Table of reviews</caption>
+                <thead>
+                    <tr>
+                        <th class="date"><span class="order">Date</span></th>
+                        <th class="user"><span class="order">User</span></th>
+                        <th class="feedback"><span class="order">Feedback</span></th>
+                        <th class="score"><span class="order">Score</span></th
+                    </tr>
+                </thead>
+                <tbody id="body-2">
+                    <tr>
+                        <td data-value="20220110">10 Jan 2022</td>
+                        <td>Mike</td>
+                        <td>Thanks</td>
+                        <td class="score" data-score="3">&#9734;&#9734;&#9733;&#9733;&#9733;</td>
+                    </tr>
+                    <tr>
+                        <td data-value="20220108">8 Jan 2022</td>
+                        <td>Alice</td>
+                        <td>Great service and fast delivery</td>
+                        <td class="score" data-value="4">&#9734;&#9733;&#9733;&#9733;&#9733;</td>
+                    </tr>
+                    <tr>
+                        <td data-value="20220104">4 Jan 2022</td>
+                        <td>Jenny</td>
+                        <td>Best webshop, use it all the time.</td>
+                        <td class="score" data-value="5">&#9733;&#9733;&#9733;&#9733;&#9733;</td>
+                    </tr>
+                    <tr>
+                        <td data-value="20220102">2 Jan 2022</td>
+                        <td>Henry</td>
+                        <td>Great prices and large selection of products.</td>
+                        <td class="score" data-value="4">&#9734;&#9733;&#9733;&#9733;&#9733;</td>
+                    </tr>
+                    <tr>
+                        <td data-value="20220101">1 Jan 2022</td>
+                        <td>Flinn</td>
+                        <td>I had a small issue with the product, customer service solved the issue right away.</td>
+                        <td class="score" data-value="3">&#9734;&#9734;&#9733;&#9733;&#9733;</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="os-definitions">
+            <div class="heading">
+                <h2>Operating System Definitions</h2>
+            </div>
+            <dl>
+                <dt>Android</dt>
+                <dd>Android is a mobile operating system based on a modified version of the Linux kernel and other open source software, designed primarily for touchscreen mobile devices such as smartphones and tablets.</dd>
+                <dt>macOs</dt>
+                <dd>It is the primary operating system for Apple's Mac computers. Within the market of desktop and laptop computers it is the second most widely used desktop OS, after Microsoft Windows and ahead of Chrome OS.</dd>
+                <dt>watchOS</dt>
+                <dd>watchOS is the operating system of the Apple Watch, developed by Apple Inc.</dd>
+                <dt>Windows</dt>
+                <dd>Microsoft Windows, commonly referred to as Windows, is a group of several proprietary graphical operating system families, all of which are developed and marketed by Microsoft.</dd>
+            </dl>
+            <p><em>Information gathered from <strong><a href="https://en.wikipedia.org/">Wikipedia</a></strong></em></p>
+        </section>
+
+        <section id="styling-examples">
+            <div class="heading">
+                <h2>Styling Examples</h2>
+            </div>
+            <div>If you are interested in front-end development, here is a code snippet from our stylesheet </div>
+            <pre>
+                <code>
+    nav {
+        border-bottom: 1px solid black;
+    }
+                </code>
+            </pre>
+        </section>
+    </main>
+    <footer>
+        <section id="return-policy">
+            <div class="heading">
+                <h2>Return Policy</h2>
+            </div>
+            <div>
+                <p>
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                    when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                    It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+                </p>
+                <p>
+                    It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
+                    nd more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                </p>
+            </div>
+        </section>
+    </footer>
+</body>
+</html>
+<!--
+    == Browser compatibility report ==
+    This page has been tested and is confirmed to be working with the following media:
+
+    Desktop:
+    - Google Chrome v97
+    - Safari v14
+    - Firefox v95
+    - Opera v82
+
+    Mobile:
+    - Android v10 (Chrome Mobile) - Responsive
+    - iPhone v13 (Safari Mobile) - Responsive
+
+    Print:
+    - Specific page breaks have been added
+    - Forms have been hidden
+
+    Scripts:
+    - The application will work with all browsers supporting jQuery v3.4.1
+-->

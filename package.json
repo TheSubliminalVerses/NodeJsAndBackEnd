@@ -5,6 +5,8 @@
   "main": "server/server.js",
   "scripts": {
     "start": "node server/server.js",
+    "initialize": "node scripts/init.js",
+    "seed": "node scripts/seedDemoProducts.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc"
   },

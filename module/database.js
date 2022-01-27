@@ -28,7 +28,7 @@ exports.queryProducts = queryProducts;
 function prepare(db) {
     db.serialize(function () {
         db.run(`CREATE TABLE products (id INTEGER PRIMARY KEY AUTOINCREMENT, brand TEXT NOT NULL, model TEXT NOT NULL,
-        os TEXT NOT NULL, screen_size INTEGER DEFAULT 10, image TEXT NOT NULL)`).run(`INSERT INTO products (id, brand, model, os, screen_size, image)
+        os TEXT NOT NULL, screensize INTEGER DEFAULT 10, image TEXT NOT NULL)`).run(`INSERT INTO products (id, brand, model, os, screensize, image)
         VALUES (0, 'Apple', 'iPhone 13', 'iOS', 17, 'https://...')`);
     });
 }
@@ -56,7 +56,7 @@ function getLastProduct(callback, db) {
 }
 exports.getLastProduct = getLastProduct;
 function getProductById(id, callback, db) {
-    db.get(`SELECT ID id, Brand brand, Model model, OS os, Screen_Size screen_size, Image image FROM products WHERE id = ${id}`, [], (err, row) => {
+    db.get(`SELECT id, brand, model, OS os, screensize, image FROM products WHERE id = ${id}`, [], (err, row) => {
         if (err) {
             console.error("-> Fetch failed: " + err);
             return;

@@ -6,6 +6,11 @@ npm install
 npm start
 ```
 
+## Create demo data
+```
+npm run seed
+```
+
 # API Documentation
 ## GET /products - Get all product
 This method returns all products.
