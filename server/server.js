@@ -66,7 +66,7 @@ router.post("/apiv1/submit",  urlParser, (req, res) => {
 
         console.log(`-> POST ${HTTPRequestCodes.post_success}: OK`)
     }
-
+    res.end("true")
 })
 
 router.get("/apiv1", (req, res) => {
