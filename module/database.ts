@@ -1,27 +1,28 @@
 import {Database} from "sqlite3";
-import {Response} from "express";
 
-export function queryProducts(type: string, query: string, db: Database, response: Response): void {
+export function queryProducts(type: string, query: string, db: Database, success: CallableFunction, error: CallableFunction): void {
     if (type === "all") {
         db.all(query, [], (err, rows) => {
             if (err) {
-                console.error("-> Fetch failed: " + err)
-                console.error("-> GET 400: BAD REQUEST")
+                error(error);
                 return
             }
 
-            console.log("-> Query OK")
-            response.send(rows)
+            success(rows)
         })
     } else if (type === "single") {
         db.get(query, [], (err, row) => {
             if (err) {
-                console.error("-> Fetch failed: " + err)
+                error(error);
                 return
             }
 
-            console.log("-> Query OK")
-            response.send(row)
+            if (row === undefined) {
+                error('No product found');
+                return
+            }
+
+            success(row)
         })
     }
 }
@@ -29,7 +30,7 @@ export function queryProducts(type: string, query: string, db: Database, respons
 export function prepare(db: Database): void {
     db.serialize(function () {
         db.run(`CREATE TABLE products (id INTEGER PRIMARY KEY AUTOINCREMENT, brand TEXT NOT NULL, model TEXT NOT NULL,
-        os TEXT NOT NULL, screen_size INTEGER DEFAULT 10, image TEXT NOT NULL)`).run(`INSERT INTO products (id, brand, model, os, screen_size, image)
+        os TEXT NOT NULL, screensize INTEGER DEFAULT 10, image TEXT NOT NULL)`).run(`INSERT INTO products (id, brand, model, os, screensize, image)
         VALUES (0, 'Apple', 'iPhone 13', 'iOS', 17, 'https://...')`)
     })
 }
@@ -44,5 +45,27 @@ export function setProducts(query: string, db: Database): void {
 
             console.log("-> Query OK")
         })
+    })
+}
+
+export function getLastProduct(callback: CallableFunction, db: Database) {
+    db.get(`SELECT * FROM products ORDER BY id DESC LIMIT 1`, [], (err, row) => {
+        if (err) {
+            console.error("-> Fetch failed: " + err)
+            return
+        }
+
+        callback(row)
+    })
+}
+
+export function getProductById(id: number, callback: CallableFunction, db: Database) {
+    db.get(`SELECT id, brand, model, os, screensize, image FROM products WHERE id = ${id}`, [], (err, row) => {
+        if (err) {
+            console.error("-> Fetch failed: " + err)
+            return
+        }
+
+        callback(row)
     })
 }

@@ -1,6 +1,23 @@
-# Documentation
+# Developer Documentation
+Assignment2 is in the folder that works with the api.
 
+## Initialize database
+```
+npm run init
+```
 
+### Run project in developer mode
+```
+npm install
+npm start
+```
+
+## Create demo data
+```
+npm run seed
+```
+
+# API Documentation
 ## GET /products - Get all product
 This method returns all products.
 

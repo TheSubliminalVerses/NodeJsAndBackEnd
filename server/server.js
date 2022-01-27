@@ -7,44 +7,54 @@ const path = require("path")
 const router = express.Router()
 const app = express()
 const PORT = 8080
+const cors = require('cors')
 
 const HTTPRequestCodes = {
     success: 200,
+    bad_request:400,
     err_not_found: 404,
     redirect: 302,
     post_success: 201,
     server_err: 500
 }
 
+const API_BASE = 'apiv1'
+const PRODUCTS_BASE = 'products'
+
+const PRODUCT_REQUIRED_FIELDS = ['brand', 'model', 'os']
+
 let db = new sqlite3.Database("./private/api.db", err => {
     if (err) {
         console.error("-> Error has occurred!")
-        console.log(err)
+        console.error(err)
         return
     }
 
-    console.log("-> SQLite Database successfully created/connected!")
+    console.info("-> SQLite Database successfully created/connected!")
 })
 
-let urlParser = bodyParser.urlencoded({extended: false})
+let urlParser = bodyParser.json({extended: false})
 
+
+app.use(cors())
 app.use("/", router)
-app.use("/static", express.static(__dirname + "/public"))
+app.use(`/${API_BASE}`, express.static(path.join(__dirname, '../docs')))
+
 
 // get method used to initialize the database upon creation, not used in production.
-router.get("/apiv1/init", (req, res) => {
+router.get(`/${API_BASE}/init`, (req, res) => {
     database.prepare(db)
     res.send("Database prepared")
-    console.log(`-> GET ${HTTPRequestCodes.success}: OK`)
+    console.info(`-> GET ${HTTPRequestCodes.success}: OK`)
 })
 
 // router
 router.get("/", (req, res) => {
     res.redirect("/apiv1")
-    console.log(`-> GET ${HTTPRequestCodes.redirect}: REDIRECT`)
+    console.info(`-> GET ${HTTPRequestCodes.redirect}: REDIRECT`)
 })
 
-router.get("/apiv1/submit-product", (req, res) => {
+router.get(`/${API_BASE}/submit-product`, (req, res) => {
     // res.set({"content-type": "text/html"})
     res.sendFile(path.join(__dirname + "/public/submitNewItem.html"), error => {
         if (error) {
@@ -53,49 +63,134 @@ router.get("/apiv1/submit-product", (req, res) => {
             return
         }
 
-        console.log(`-> GET ${HTTPRequestCodes.success}: OK`)
+        console.info(`-> GET ${HTTPRequestCodes.success}: OK`)
     })
 })
 
-router.post("/apiv1/submit",  urlParser, (req, res) => {
-    if (!req.body) {
-        console.log(`-> POST ${HTTPRequestCodes.server_err}: SERVER ERROR`)
+// Create a new product
+router.post(`/${API_BASE}/${PRODUCTS_BASE}`,  urlParser, (req, res) => {
+    res.set({"content-type": "application/json"})
+    const missingFields = PRODUCT_REQUIRED_FIELDS.filter(field => !req.body[field])
+
+    if (!req.body || missingFields.length) {
+        console.info(`-> POST ${HTTPRequestCodes.bad_request}: BAD REQUEST`)
+        res.status(HTTPRequestCodes.bad_request)
+        res.send({
+            error: "Bad Request",
+            message: `Missing required fields ${missingFields.join(', ')}`
+        })
     } else {
-        database.setProducts(`INSERT INTO products (id, brand, model, os, screen_size, image)
-        VALUES (${parseInt(req.body._id)}, '${req.body._brand}', '${req.body._model}', '${req.body._os}', ${parseInt(req.body._screenSize)}, '${req.body._image}')`, db)
+        const { brand, model, os, screensize, image } = req?.body
+        database.setProducts(`INSERT INTO products (brand, model, os, screensize, image)
+        VALUES ('${brand}', '${model}', '${os}', ${screensize ? parseInt(screensize) : null}, '${image || null}')`, db)
 
-        console.log(`-> POST ${HTTPRequestCodes.post_success}: OK`)
+        database.getLastProduct((row) => {
+            res.send(row)
+        }, db)
     }
-    res.end("true")
 })
 
-router.get("/apiv1", (req, res) => {
-    // res.set({"content-type": "text/html"})
-    res.sendFile(path.join(__dirname + "/public/homePage.html"), error => {
-        if (error) {
-            console.error(`-> GET ${HTTPRequestCodes.err_not_found}: NOT FOUND`)
-            res.send("-> 404: NOT FOUND")
-            return
+// Update a single product
+router.put(`/${API_BASE}/${PRODUCTS_BASE}/:id`,  urlParser, async (req, res) => {
+    // res.set({"content-type": "application/json"})
+
+    database.queryProducts(
+        "single",
+        `SELECT id, brand, model, OS os, screensize, image FROM products WHERE id = ${req.params.id}`, 
+        db,
+        (row) => {
+            const keys = Object.keys(req.body)
+            const missingValues = keys.filter(field => PRODUCT_REQUIRED_FIELDS.includes(field) && !req.body[field])
+
+            if (!req.body || missingValues.length) {
+                console.info(`-> POST ${HTTPRequestCodes.bad_request}: BAD REQUEST`)
+                res.status(HTTPRequestCodes.bad_request)
+                res.send({
+                    error: "Bad Request",
+                    message: `Missing values for required fields ${missingFields.join(', ')}`
+                })
+            } else {
+                const updateString = Object.keys(req.body).map(value => `${value} = '${req.body[value]}'`).join(', ')
+                database.setProducts(`UPDATE products SET ${updateString} WHERE id = ${req.params.id}`, db)
+
+                res.send(Object.assign(row, req.body))
+            }
+        },
+        () => {
+            console.info(`-> POST ${HTTPRequestCodes.err_not_found}: NOT FOUND`)
+            res.status(HTTPRequestCodes.err_not_found).send({
+                error: "Item not found",
+            })
         }
-
-        console.log(`-> GET ${HTTPRequestCodes.success}: OK`)
-    })
+    )
 })
 
-router.get("/apiv1/products", (req, res) => {
-    // res.set({"content-type": "application/json"})
-    database.queryProducts("all", "SELECT ID id, Brand brand, Model model, OS os, Screen_Size screen_size, Image image FROM products ORDER BY id", db, res)
-    console.log(`-> Get ${HTTPRequestCodes.success}: OK`)
+// Delete a single product
+router.delete(`/${API_BASE}/${PRODUCTS_BASE}/:id`,  urlParser, async (req, res) => {
+    res.set({"content-type": "application/json"})
+
+    database.queryProducts(
+        "single",
+        `SELECT id FROM products WHERE id = ${req.params.id}`, 
+        db,
+        (row) => {
+            database.setProducts(`DELETE FROM products WHERE id = ${req.params.id}`, db)
+
+            res.send({
+                message: "Item has been deleted",
+            })
+        },
+        () => {
+            console.info(`-> POST ${HTTPRequestCodes.err_not_found}: BAD REQUEST`)
+            res.status(HTTPRequestCodes.err_not_found).send({
+                error: "Item not found",
+            })
+        }
+    )
 })
 
-router.get("/apiv1/products/:id", (req, res) => {
-    // res.set({"content-type": "application/json"})
-    database.queryProducts("single", `SELECT ID id, Brand brand, Model model, OS os, Screen_Size screen_size, Image image FROM products WHERE id = ${req.params.id}`, db, res)
-    console.log(`-> GET ${HTTPRequestCodes.success}: OK`)
+// Get all products
+router.get(`/${API_BASE}/${PRODUCTS_BASE}`, (req, res) => {
+    res.set({"content-type": "application/json"})
+    database.queryProducts(
+        "all",
+        "SELECT id, brand, model, os, screensize, image FROM products ORDER BY id",
+        db,
+        (result) => {
+            res.send(result)
+        },
+        (error) => {
+            res.status(HTTPRequestCodes.bad_request)
+            res.send({
+                error: "Bad Request",
+            })
+        }
+    )
 })
 
+// Get a single product
+router.get(`/${API_BASE}/${PRODUCTS_BASE}/:id`, (req, res) => {
+    res.set({"content-type": "application/json"})
+    database.queryProducts(
+        "single",
+        `SELECT id, brand, model, os, screensize, image FROM products WHERE id = ${req.params.id}`, 
+        db,
+        (result) => {
+            res.send(result)
+        },
+        (error) => {
+            res.status(HTTPRequestCodes.err_not_found)
+            res.send({
+                error: "Item not found",
+            })
+        }
+    )
+    console.info(`-> GET ${HTTPRequestCodes.success}: OK`)
+})
+
+// Start the server
 app.listen(PORT, function () {
     let date = new Date()
-    console.log(`-> Server started successfully at ${date.getDate()}-${date.getMonth() + 1}-${date.getUTCFullYear()} | ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}.`)
-    console.log(`-> Express app listening on ${PORT}.`)
+    console.info(`-> Server started successfully at ${date.getDate()}-${date.getMonth() + 1}-${date.getUTCFullYear()} | ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}.`)
+    console.info(`-> Express app listening on ${PORT}.`)
 })

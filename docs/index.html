@@ -20,9 +20,27 @@
         <p>
           No authentication or HTTP headers are required to access the API. All body input should be given in <span class="type">application/json</span> format and all data is returned in <span class="type">application/json</span> format.
         </p>
+
+        <p>
+          If you have any questions regarding the api or would like to report issues, please contact <a href="mailto: api@webshop.co">api@webshop.co</a>
+        </p>
+
+        <div class="row-flex center">
+          <div class="announcement">
+            <div class="title">Welcome developers!</div>
+            <div class="body">
+              <p>We are proud to welcome you to use our new API. Here you can perform various REST operations to update our vast database of products. Feel free to explore.</p>
+
+              <p>Regards,
+                <br>
+                The API Team</p>
+              </p>
+            </div>
+          </div>
+        </div>
       </section>
       <h2>Generic</h2>
-      <article class="api-object" id="object-product">
+      <article class="api-object" id="response-codes">
         <header>
           <div class="title">Response Codes</div>
           <div class="description">Various response codes and their meanings</div>
@@ -151,26 +169,24 @@
               <div class="example">
                 <pre>
                   <code>
-  {
-    "products": [
-      {
-        "id": 1,
-        "brand": "Product 1",
-        "model": "This is product 1",
-        "os": "ios"
-        "screensize": "10.00",
-        "image": "http://placehold.it/200x200"
-      },
-      {
-        "id": 2,
-        "brand": "Product 1",
-        "model": "This is product 1",
-        "os": "ios"
-        "screensize": "10.00",
-        "image": "http://placehold.it/200x200"
-      }
-    ]
-  }
+  [
+    {
+      "id": 1,
+      "brand": "Product 1",
+      "model": "This is product 1",
+      "os": "ios"
+      "screensize": "10.00",
+      "image": "http://placehold.it/200x200"
+    },
+    {
+      "id": 2,
+      "brand": "Product 2",
+      "model": "This is product 2",
+      "os": "android"
+      "screensize": "10.00",
+      "image": "http://placehold.it/200x200"
+    }
+  ]
                   </code>
                 </pre>
               </div>
