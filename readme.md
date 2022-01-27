@@ -1,6 +1,12 @@
-# Documentation
+# Developer Documentation
 
+### Run project in developer mode
+```
+npm install
+npm start
+```
 
+# API Documentation
 ## GET /products - Get all product
 This method returns all products.
 

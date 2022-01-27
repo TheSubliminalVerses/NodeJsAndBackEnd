@@ -40,7 +40,7 @@
         </div>
       </section>
       <h2>Generic</h2>
-      <article class="api-object" id="object-product">
+      <article class="api-object" id="response-codes">
         <header>
           <div class="title">Response Codes</div>
           <div class="description">Various response codes and their meanings</div>
@@ -169,26 +169,24 @@
               <div class="example">
                 <pre>
                   <code>
-  {
-    "products": [
-      {
-        "id": 1,
-        "brand": "Product 1",
-        "model": "This is product 1",
-        "os": "ios"
-        "screensize": "10.00",
-        "image": "http://placehold.it/200x200"
-      },
-      {
-        "id": 2,
-        "brand": "Product 1",
-        "model": "This is product 1",
-        "os": "ios"
-        "screensize": "10.00",
-        "image": "http://placehold.it/200x200"
-      }
-    ]
-  }
+  [
+    {
+      "id": 1,
+      "brand": "Product 1",
+      "model": "This is product 1",
+      "os": "ios"
+      "screensize": "10.00",
+      "image": "http://placehold.it/200x200"
+    },
+    {
+      "id": 2,
+      "brand": "Product 2",
+      "model": "This is product 2",
+      "os": "android"
+      "screensize": "10.00",
+      "image": "http://placehold.it/200x200"
+    }
+  ]
                   </code>
                 </pre>
               </div>

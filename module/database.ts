@@ -1,27 +1,29 @@
 import {Database} from "sqlite3";
 import {Response} from "express";
 
-export function queryProducts(type: string, query: string, db: Database, response: Response): void {
+export function queryProducts(type: string, query: string, db: Database, success: CallableFunction, error: CallableFunction): void {
     if (type === "all") {
         db.all(query, [], (err, rows) => {
             if (err) {
-                console.error("-> Fetch failed: " + err)
-                console.error("-> GET 400: BAD REQUEST")
+                error(error);
                 return
             }
 
-            console.log("-> Query OK")
-            response.send(rows)
+            success(rows)
         })
     } else if (type === "single") {
         db.get(query, [], (err, row) => {
             if (err) {
-                console.error("-> Fetch failed: " + err)
+                error(error);
                 return
             }
 
-            console.log("-> Query OK")
-            response.send(row)
+            if (row === undefined) {
+                error('No product found');
+                return
+            }
+
+            success(row)
         })
     }
 }
@@ -44,5 +46,27 @@ export function setProducts(query: string, db: Database): void {
 
             console.log("-> Query OK")
         })
+    })
+}
+
+export function getLastProduct(callback: CallableFunction, db: Database) {
+    db.get(`SELECT * FROM products ORDER BY id DESC LIMIT 1`, [], (err, row) => {
+        if (err) {
+            console.error("-> Fetch failed: " + err)
+            return
+        }
+
+        callback(row)
+    })
+}
+
+export function getProductById(id: number, callback: CallableFunction, db: Database) {
+    db.get(`SELECT ID id, Brand brand, Model model, OS os, Screen_Size screen_size, Image image FROM products WHERE id = ${id}`, [], (err, row) => {
+        if (err) {
+            console.error("-> Fetch failed: " + err)
+            return
+        }
+
+        callback(row)
     })
 }

@@ -4,7 +4,9 @@
   "description": "NodeJs + Backend project",
   "main": "server/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
   },
   "author": "Michael Adrian Polesensky and Mani Gudrvardarson",
   "license": "MIT",

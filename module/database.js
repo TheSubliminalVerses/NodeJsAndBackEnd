@@ -1,26 +1,26 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.setProducts = exports.prepare = exports.queryProducts = void 0;
-function queryProducts(type, query, db, response) {
+function queryProducts(type, query, db, success, error) {
     if (type === "all") {
         db.all(query, [], (err, rows) => {
             if (err) {
-                console.error("-> Fetch failed: " + err);
-                console.error("-> GET 400: BAD REQUEST");
+                error(error);
                 return;
             }
-            console.log("-> Query OK");
-            response.send(rows);
+            success(rows);
         });
     }
     else if (type === "single") {
         db.get(query, [], (err, row) => {
             if (err) {
-                console.error("-> Fetch failed: " + err);
+                error(error);
                 return;
             }
-            console.log("-> Query OK");
-            response.send(row);
+            if (row === undefined) {
+                error('No product found');
+                return;
+            }
+            success(row);
         });
     }
 }
@@ -45,3 +45,23 @@ function setProducts(query, db) {
     });
 }
 exports.setProducts = setProducts;
+function getLastProduct(callback, db) {
+    db.get(`SELECT * FROM products ORDER BY id DESC LIMIT 1`, [], (err, row) => {
+        if (err) {
+            console.error("-> Fetch failed: " + err);
+            return;
+        }
+        callback(row);
+    });
+}
+exports.getLastProduct = getLastProduct;
+function getProductById(id, callback, db) {
+    db.get(`SELECT ID id, Brand brand, Model model, OS os, Screen_Size screen_size, Image image FROM products WHERE id = ${id}`, [], (err, row) => {
+        if (err) {
+            console.error("-> Fetch failed: " + err);
+            return;
+        }
+        callback(row);
+    });
+}
+exports.getProductById = getProductById;
