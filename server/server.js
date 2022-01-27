@@ -117,7 +117,7 @@ router.put(`/${API_BASE}/${PRODUCTS_BASE}/:id`,  urlParser, async (req, res) => 
                 res.status(HTTPRequestCodes.bad_request)
                 res.send({
                     error: "Bad Request",
-                    message: `Missing values for required fields ${missingFields.join(', ')}`
+                    message: `Missing values for required fields ${missingValues.join(', ')}`
                 })
             } else {
                 const updateString = Object.keys(req.body).map(value => `${value} = '${req.body[value]}'`).join(', ')
