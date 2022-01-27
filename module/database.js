@@ -10,7 +10,7 @@ function queryProducts(type, query, db, response) {
                 return;
             }
             console.log("-> Query OK");
-            rows.forEach(row => { response.send(row); });
+            response.send(rows);
         });
     }
     else if (type === "single") {

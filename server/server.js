@@ -45,7 +45,7 @@ router.get("/", (req, res) => {
 })
 
 router.get("/apiv1/submit-product", (req, res) => {
-    res.set({"content-type": "text/html"})
+    // res.set({"content-type": "text/html"})
     res.sendFile(path.join(__dirname + "/public/submitNewItem.html"), error => {
         if (error) {
             console.error(`-> GET ${HTTPRequestCodes.err_not_found}: NOT FOUND`)
@@ -58,19 +58,19 @@ router.get("/apiv1/submit-product", (req, res) => {
 })
 
 router.post("/apiv1/submit",  urlParser, (req, res) => {
-    res.set({"content-type": "text/html"})
     if (!req.body) {
         console.log(`-> POST ${HTTPRequestCodes.server_err}: SERVER ERROR`)
     } else {
         database.setProducts(`INSERT INTO products (id, brand, model, os, screen_size, image)
-        VALUES (${req.body._id}, ${req.body._brand}, ${req.body.model}, ${req.body._os}, ${req.body._screenSize}, ${req.body._image})`, db)
+        VALUES (${parseInt(req.body._id)}, '${req.body._brand}', '${req.body._model}', '${req.body._os}', ${parseInt(req.body._screenSize)}, '${req.body._image}')`, db)
 
         console.log(`-> POST ${HTTPRequestCodes.post_success}: OK`)
     }
+
 })
 
 router.get("/apiv1", (req, res) => {
-    res.set({"content-type": "text/html"})
+    // res.set({"content-type": "text/html"})
     res.sendFile(path.join(__dirname + "/public/homePage.html"), error => {
         if (error) {
             console.error(`-> GET ${HTTPRequestCodes.err_not_found}: NOT FOUND`)
@@ -83,19 +83,19 @@ router.get("/apiv1", (req, res) => {
 })
 
 router.get("/apiv1/products", (req, res) => {
-    res.set({"content-type": "application/json"})
+    // res.set({"content-type": "application/json"})
     database.queryProducts("all", "SELECT ID id, Brand brand, Model model, OS os, Screen_Size screen_size, Image image FROM products ORDER BY id", db, res)
     console.log(`-> Get ${HTTPRequestCodes.success}: OK`)
 })
 
 router.get("/apiv1/products/:id", (req, res) => {
-    res.set({"content-type": "application/json"})
+    // res.set({"content-type": "application/json"})
     database.queryProducts("single", `SELECT ID id, Brand brand, Model model, OS os, Screen_Size screen_size, Image image FROM products WHERE id = ${req.params.id}`, db, res)
     console.log(`-> GET ${HTTPRequestCodes.success}: OK`)
 })
 
 app.listen(PORT, function () {
     let date = new Date()
-    console.log(`-> Server started successfully at ${date.getDay()}-${date.getMonth() + 1}-${date.getUTCFullYear()} | ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}.`)
+    console.log(`-> Server started successfully at ${date.getDate()}-${date.getMonth() + 1}-${date.getUTCFullYear()} | ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}.`)
     console.log(`-> Express app listening on ${PORT}.`)
 })
