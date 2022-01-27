@@ -43,8 +43,7 @@ let db = new sqlite3.Database("./private/api.db", err => {
     console.info("-> SQLite Database successfully created/connected!")
 })
 
-let urlParser = bodyParser.json({extended: false})
-
+let jsonParser = bodyParser.json()
 
 app.use(cors())
 app.use("/", router)
@@ -78,7 +77,7 @@ router.get(`/${API_BASE}/submit-product`, (req, res) => {
 })
 
 // Create a new product
-router.post(`/${API_BASE}/${PRODUCTS_BASE}`,  urlParser, (req, res) => {
+router.post(`/${API_BASE}/${PRODUCTS_BASE}`,  jsonParser, (req, res) => {
     res.set({"content-type": "application/json"})
     const missingFields = PRODUCT_REQUIRED_FIELDS.filter(field => !req.body[field])
 
@@ -90,9 +89,9 @@ router.post(`/${API_BASE}/${PRODUCTS_BASE}`,  urlParser, (req, res) => {
             message: `Missing required fields ${missingFields.join(', ')}`
         })
     } else {
-        const { brand, model, os, screensize, image } = req?.body
-        database.setProducts(`INSERT INTO products (brand, model, os, screensize, image)
-        VALUES ('${brand}', '${model}', '${os}', ${screensize ? parseInt(screensize) : null}, '${image || null}')`, db)
+        const { brand, model, os, screen_size, image } = req?.body
+        database.setProducts(`INSERT INTO products (brand, model, os, screen_size, image)
+        VALUES ('${brand}', '${model}', '${os}', ${screen_size ? parseInt(screen_size) : null}, '${image || null}')`, db)
 
         database.getLastProduct((row) => {
             res.send(row)
@@ -101,12 +100,12 @@ router.post(`/${API_BASE}/${PRODUCTS_BASE}`,  urlParser, (req, res) => {
 })
 
 // Update a single product
-router.put(`/${API_BASE}/${PRODUCTS_BASE}/:id`,  urlParser, async (req, res) => {
+router.put(`/${API_BASE}/${PRODUCTS_BASE}/:id`,  jsonParser, async (req, res) => {
     // res.set({"content-type": "application/json"})
 
     database.queryProducts(
         "single",
-        `SELECT id, brand, model, OS os, screensize, image FROM products WHERE id = ${req.params.id}`, 
+        `SELECT id, brand, model, OS os, screen_size, image FROM products WHERE id = ${req.params.id}`,
         db,
         (row) => {
             const keys = Object.keys(req.body)
@@ -136,7 +135,7 @@ router.put(`/${API_BASE}/${PRODUCTS_BASE}/:id`,  urlParser, async (req, res) => 
 })
 
 // Delete a single product
-router.delete(`/${API_BASE}/${PRODUCTS_BASE}/:id`,  urlParser, async (req, res) => {
+router.delete(`/${API_BASE}/${PRODUCTS_BASE}/:id`,  jsonParser, async (req, res) => {
     res.set({"content-type": "application/json"})
 
     database.queryProducts(
@@ -164,7 +163,7 @@ router.get(`/${API_BASE}/${PRODUCTS_BASE}`, (req, res) => {
     res.set({"content-type": "application/json"})
     database.queryProducts(
         "all",
-        "SELECT id, brand, model, os, screensize, image FROM products ORDER BY id",
+        "SELECT id, brand, model, os, screen_size, image FROM products ORDER BY id",
         db,
         (result) => {
             res.send(result)
@@ -183,7 +182,7 @@ router.get(`/${API_BASE}/${PRODUCTS_BASE}/:id`, (req, res) => {
     res.set({"content-type": "application/json"})
     database.queryProducts(
         "single",
-        `SELECT id, brand, model, os, screensize, image FROM products WHERE id = ${req.params.id}`, 
+        `SELECT id, brand, model, os, screen_size, image FROM products WHERE id = ${req.params.id}`,
         db,
         (result) => {
             res.send(result)
