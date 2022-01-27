@@ -1,4 +1,5 @@
 # Developer Documentation
+Assignment2 is in the folder that works with the api.
 
 ## Initialize database
 ```
