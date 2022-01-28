@@ -89,9 +89,9 @@ router.post(`/${API_BASE}/${PRODUCTS_BASE}`,  jsonParser, (req, res) => {
             message: `Missing required fields ${missingFields.join(', ')}`
         })
     } else {
-        const { brand, model, os, screen_size, image } = req?.body
+        const { brand, model, os, screensize, image } = req?.body
         database.setProducts(`INSERT INTO products (brand, model, os, screensize, image)
-        VALUES ('${brand}', '${model}', '${os}', ${screen_size ? parseInt(screen_size) : null}, '${image || null}')`, db)
+        VALUES ('${brand}', '${model}', '${os}', ${screensize ? parseInt(screensize) : null}, '${image || null}')`, db)
 
         database.getLastProduct((row) => {
             res.send(row)
