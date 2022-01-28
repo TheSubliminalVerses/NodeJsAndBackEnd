@@ -13,9 +13,12 @@ POST http://localhost:8080/apiv1/products HTTP/1.1
 content-type: application/json
 
 {
-    "name": "sample",
-    "time": "Wed, 21 Oct 2015 18:27:50 GMT"
-}
+    "brand": "Apple",
+    "model": "iPhone 13",
+    "os": "iOS 15.0",
+    "screensize": 6,
+    "image": "https://i.cdn.nrholding.net/63563528/1000/1000"
+},
 
 ### Update
 
@@ -29,5 +32,5 @@ content-type: application/json
 
 ### Delete
 
-DELETE http://localhost:8080/apiv1/products/1 HTTP/1.1
+DELETE http://localhost:8080/apiv1/products/7 HTTP/1.1
 content-type: application/json
